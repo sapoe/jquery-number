@@ -10,7 +10,26 @@
  * @author	Sam Sehnert
  * @docs	http://www.teamdf.com/web/jquery-number-format-redux/196/
  */
-(function($){
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Make globaly available as well
+        define(['jquery'], function (jquery) {
+            return (root.number = factory(jquery));
+        });
+    } else if (typeof module === 'object' && module.exports) {
+        // Node / Browserify
+        //isomorphic issue
+        var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;
+        if (!jQuery) {
+            jQuery = require('jquery');
+            if (!jQuery.fn) jQuery.fn = {};
+        }
+        module.exports = factory(jQuery);
+    } else {
+        // Browser globals
+        root.number = factory(root.jQuery);
+    }
+}(this, function($) {
 
 	"use strict";
 
@@ -761,4 +780,4 @@
 		return s.join(dec_point);
 	}
 
-})(jQuery);
+}));
